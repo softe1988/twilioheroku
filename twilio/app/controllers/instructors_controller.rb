@@ -1,6 +1,30 @@
 class InstructorsController < ApplicationController
   before_action :set_instructor, only: [:show, :edit, :update, :destroy]
 
+  def text
+    @instructor = set_instructor
+    @message = params[:message]
+    
+    account_sid = "AC3cf1284634368f7cda58c785e31c95d8"
+    # from api credentials can find at dashboard/credentials
+    auth_token = "572c7c5e5d6192fc42642f7db099495e"
+    #from api key credentials can find at dashboard/credentials
+    client = Twilio::REST::Client.new account_sid, auth_token
+    # here we pull in the variables we just set up
+    
+    from = "7048156779"
+    # twilio number
+    
+    client.account.messages.create(
+      :from => from,
+      :to => "+1" + @instructor.phone,
+      :body => @message
+      )
+      
+      flash[:notice] = "Text to send to instructor. Now go study!"
+      redirect_to :action => "show", :id => @instructor.id
+  end
+  
   # GET /instructors
   # GET /instructors.json
   def index

@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   resources :instructors
   
   root 'instructors#index'
+   
+  get 'instructors/:id/text' => 'instructors#text', as: :text
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
